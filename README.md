@@ -9,7 +9,7 @@ Regular weather stations that can be purchased are covering temperature, rel. hu
 ## Hardware Components
 
 + **Stevenson Screen**
-  + La Crosse [ Sensor Weather Shield](https://www.lacrossetechnology.com/925-1418-sensor-weather-shield)
+  + La Crosse [Sensor Weather Shield](https://www.lacrossetechnology.com/925-1418-sensor-weather-shield)
   + 1"x0.75mm Fused Silica Disc: https://amazon.com
 + **Case**
   + Hammond [1591MSGY](https://www.hammfg.com/part/1591MSGY)
@@ -25,7 +25,9 @@ Regular weather stations that can be purchased are covering temperature, rel. hu
   + Adafruit [USB / DC / Solar Lithium Ion/Polymer charger](https://www.adafruit.com/product/390)
   + Waveshare [Solar Panel (6V 5W)](https://www.waveshare.com/solar-panel-6v-5w.htm)
   + 5V DC DC Converter Step Up Power Supply [e.g. AliExpress](https://www.aliexpress.com/item/32635991770.html)
-  + Adafruit [LiPO battery, 3.7v 2500mAh](https://www.adafruit.com/product/328)
+  + ~~Adafruit [LiPO battery, 3.7v 2500mAh](https://www.adafruit.com/product/328)~~
+  + Tenergy [Premium AA 2500mAh NiMH Rechargeable Battery](https://power.tenergy.com/tenergy-premium-aa-2500mah-nimh-rechargeable-battery/)
+  + Battery Holder 4.5V [AA Battery Holder with Switch](https://www.amazon.com/gp/product/B07C6XC3MP/ref=ppx_yo_dt_b_asin_title_o01_s01?ie=UTF8&psc=1)
 
 ## Wiring Components
 
@@ -103,7 +105,7 @@ Source: <http://bmcnoldy.rsmas.miami.edu/Humidity.html>
 
 Alduchov, O. A., and R. E. Eskridge, 1996: [**Improved Magnus' form approximation of saturation vapor pressure.**](https://doi.org/10.1175/1520-0450(1996)035<0601:IMFAOS>2.0.CO;2) *J. Appl. Meteor.*, 35, 601–609.
 
-August, E. F., 1828: [**Ueber die Berechnung der Expansivkraft des Wasserdunstes.**](https://doi.org/10.1002/andp.18280890511) *Ann. Phys. Chem.*, 13, 122–137.
+August, E. F., 1828: [**Über die Berechnung der Expansivkraft des Wasserdunstes.**](https://doi.org/10.1002/andp.18280890511) *Ann. Phys. Chem.*, 13, 122–137.
 
 Magnus, G., 1844: [**Versuche über die Spannkräfte des Wasserdampfs.**](https://doi.org/10.1002/andp.18441370202) *Ann. Phys. Chem.*, 61, 225–247.
 
@@ -192,3 +194,15 @@ None of the sensors used in the weather station have been calibrated other than 
 ## Battery Life | Solar Power
 
 The data is recorded in 5 min intervals, putting the ESP into sleep mode in between measurements to save power. The biggest power consumption is by the particle sensor's fan. It is running for a minimum duration of 30 seconds before each measurement. So far the solar panel is able to recharge the battery in about 2-3h (November), but the winter will show if it can keep the battery sufficiently charged, especially under cloudy conditions, snow and low temperatures.
+
+### Cold Weather Issue
+
+Expecting a faster degradation of the LiPo battery due to cold temperature, I was not expecting it to be this fast. After a few days of low light and one night of -6 ℃ or 21 ℉, the battery was depleted. Charging up the battery was not working any more, instead it just puffed up like a balloon.
+
+![Battery after a short cold period](./img/bloated-battery.jpg)
+
+Since the weather station is located in Michigan, periods with temperatures below -18 ℃ or 0 ℉ are to be expected in the winter. To account for this, one option would be, to use a different battery type like Nickel–metal hydride or Lead Acid. The other option would be to use super capacitors (super-caps). Those can be operate under extreme temperatures, but the downside is their low capacity and relatively large size compared to a standard battery.
+
+#### Ni-MH AA Batteries
+
+Nickel–metal hydride batteries from Tenergy are advertised to perform even under extreme conditions -20 ℃ (-4°F) to 60 ℃ (140 ℉) with a capacity of 2500 mAh. If they work, they are probably a better option in terms of capacity, than the super-caps. Also the standard AA size will make it easier to replace damaged cells. The batteries are attached underneath the Stevenson Screen in a box with an on/off switch. They are too big to go inside the screen like the previous LiPo battery.
