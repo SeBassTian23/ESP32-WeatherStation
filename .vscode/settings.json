@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.sass": "scss",
+    "functional": "cpp",
+    "memory": "cpp",
+    "istream": "cpp",
+    "array": "cpp",
+    "string": "cpp"
+  }
+}
