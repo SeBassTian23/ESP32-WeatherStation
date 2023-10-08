@@ -4,7 +4,7 @@
 
 ![Weather Station](./img/weather-station.jpg)
 
-Regular weather stations that can be purchased are covering temperature, rel. humidity, pressure, wind direction and speed, perhaps rainfall. But parameters like particle count or AQI and UV-Index are harder to find or more expensive, yet these parameters are important when it comes to health. Wind direction and speed are not too hard to add, if somebody is interested, but the main focus is on the less common parameters. The Weather Station is recording all results on a SD card as well as sending the data via Wifi and a REST API to a Weather Station App. The SD card is meant as a backup in case Wifi or server are not available, whereas the data transmitted via Wifi is for viewing the current data in a more convenient way (not opening the station every time). There are more energy efficient ways of transferring the data from the station, but the idea was to have a station, that doesn't require a receiver to further distribute or process the data indoors. Also, the goal was to run it of battery and solar power, to allow it to be placed in any location, without having to connect it to a wired power source.
+Regular weather stations that can be purchased cover temperature, rel. humidity, pressure, wind direction, and speed, perhaps rainfall. But parameters like particle count or AQI and UV-Index are harder to find or more expensive, yet these parameters are important for health. If somebody is interested, wind direction and speed are not too hard to add, but the main focus is on the less common parameters. The Weather Station is recording all results on an SD card as well as sending the data via Wi-Fi and a REST API to a Weather Station App. The SD card is meant as a backup in case Wi-Fi or servers are not available, whereas the data transmitted via Wi-Fi is for viewing the current data in a more convenient way (not opening the station every time). There are more energy-efficient ways of transferring the data from the station, but the idea was to have a station, that doesn't require a receiver to distribute further or process the data indoors. Also, the goal was to run it on battery and solar power, to allow it to be placed in any location, without having to connect it to a wired power source.
 
 ## Hardware Components
 
@@ -24,12 +24,12 @@ Regular weather stations that can be purchased are covering temperature, rel. hu
 - **Power**
   - Adafruit [USB / DC / Solar Lithium Ion/Polymer charger](https://www.adafruit.com/product/390)
   - Waveshare [Solar Panel (6V 5W)](https://www.waveshare.com/solar-panel-6v-5w.htm)
-  - 5V DC DC Converter Step Up Power Supply [e.g. AliExpress](https://www.aliexpress.com/item/32635991770.html)
+  - 5V DC-DC Converter Step Up Power Supply [e.g. AliExpress](https://www.aliexpress.com/item/32635991770.html)
   - 3 AA LiPO batteries in a simple battery case with an On/Off switch
 
 ## Updates
 
-- Adafruit LiPO battery has been replaced with a simple battery holder for 3 AA batteries. In my case I use the LiPO []() which seem to work better under cold conditions. The existing wiring can remain the same.
+- Adafruit LiPO battery has been replaced with a simple battery holder for 3 AA batteries. In my case I, use the LiPO []() which seems to work better under cold conditions. The existing wiring can remain the same.
 - Adafruit [Huzzah32 ESP32 Feather](https://learn.adafruit.com/adafruit-huzzah32-esp32-feather/overview) has been replaced with EzSBC's [ESP32-based Feather Breakout and Development Board](https://www.ezsbc.com/product/esp32-feather/) which has the same functionality and pinout as the Adafruit board, but a much lower deep sleep current.
 - The PMS5003 was replaced by a PMS7003 since it stopped working.
 - Switch from the [Arduino-IDE](https://www.arduino.cc/) to [PlatformIO](https://platformio.org/).
@@ -72,7 +72,7 @@ The Battery is connected to the JTS connector of the LiPo Charger.
 
 ## Setup
 
-To update settings for the weatherstation, simply copy the content below into a file named `settings.json`. Remove the comments and add copy the file to the root folder of the SD card in your weather station. When restarted, it will update the settings and remove the file from the SD card.
+To update settings for the weather station, simply copy the content below into a file named `settings.json`. Remove the comments and add a copy of the file to the root folder of the SD card in your weather station. When restarted, it will update the settings and remove the file from the SD card.
 
 ```JavaScript
 {
@@ -92,23 +92,26 @@ To update settings for the weatherstation, simply copy the content below into a 
 
   // Time and NTP Server
   "ntpServer":     "pool.ntp.org",            // URL address
-  "timezoneStr":   "UTC0",                    // Timezone Definition (https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv)
+  "timezoneStr":   "UTC0",                    // Timezone Definition
   "gmtOffset_sec": 0,                         // Timezone offset of your location in seconds
 
   // Measurement interval in Minutes
   "sleepDuration": 5
 }
 ```
+\* Source: [Timzone Definitions](https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv)
 
 ## Sensors
 
-All sensors are located inside the Stevenson Screen. All other components including the Micro-Controller, charging circuitry and battery are in a separate box. To connect sensors and the Micro-Controller, an Ethernet cable is used.
+All sensors are located inside the Stevenson Screen. All other components including the Microcontroller, charging circuitry, and battery are in a separate box. To connect sensors and the Microcontroller, an Ethernet cable is used.
 
 | Sensor  | Parameters Measured                                                                                                                         | Parameters Derived                                   | Location |
 | :------ | :------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | :--------|
 | SI1145  | Ultraviolet Light (UV) a.u.<br>Visible Light a.u.<br>Infrared Light (IR) a.u.                                                               | `UV-Index`                                           | On top of the Stevenson Screen is a small hole drilled with the sensor breakout board glued right underneath. The hole is covered by a thin slice of silica glass to protect the sensor and minimize the reduction of UV transmission at the same time. |
-| BME680  | Temperature ℃<br>rel. Humidity %<br>Pressure hPa<br>Air Quality kΩ                                                                          | `Dew Point`<br>`Heat Index`<br>`Pressure (PSML) hPa` | The sensor breakout board is glued close to the bottom of the encasing. The battery is located at the opposite side to prevent it from skewing the temperature measurements as little as possible when charging. |
+| BME680  | Temperature ℃<br>rel. Humidity %<br>Pressure hPa<br>Air Quality kΩ                                                                          | `Dew Point`<br>`Heat Index`<br>`Pressure (PSML) hPa` | The sensor breakout board is glued close to the bottom of the encasing. The battery is located on the opposite side to prevent it from skewing the temperature measurements as little as possible when charging. |
 | PMS7003 | PM 1 μg/m³<br>PM 2.5 μg/m³<br>PM 10 μg/m³<br>>0.3 μm/0.1L<br>>0.5 μm/0.1L<br>>1.0 μm/0.1L<br>>2.5 μm/0.1L<br>>5.0 μm/0.1L<br>>10.0 μm/0.1L | `Air Quality Index`                                  | The particle sensor is on top of the box holding the Micro-Controller, charging circuitry and battery. |
+
+## Parameter Calculations
 
 ### UV-Index
 
@@ -128,11 +131,9 @@ Source: <http://bmcnoldy.rsmas.miami.edu/Humidity.html>
 
 #### References
 
-Alduchov, O. A., and R. E. Eskridge, 1996: [**Improved Magnus' form approximation of saturation vapor pressure.**](<https://doi.org/10.1175/1520-0450(1996)035<0601:IMFAOS>2.0.CO;2>) _J. Appl. Meteor._, 35, 601–609.
-
-August, E. F., 1828: [**Ueber die Berechnung der Expansivkraft des Wasserdunstes.**](https://doi.org/10.1002/andp.18280890511) _Ann. Phys. Chem._, 13, 122–137.
-
-Magnus, G., 1844: [**Versuche über die Spannkräfte des Wasserdampfs.**](https://doi.org/10.1002/andp.18441370202) _Ann. Phys. Chem._, 61, 225–247.
+- Alduchov, O. A., and R. E. Eskridge, 1996: [**Improved Magnus Form Approximation of Saturation Vapor Pressure**](https://doi.org/10.1175/1520-0450(1996)035%3C0601:IMFAOS%3E2.0.CO;2) _J. Appl. Meteor._, 35, 601–609.
+- August, E. F., 1828: [**Ueber die Berechnung der Expansivkraft des Wasserdunstes.**](https://doi.org/10.1002/andp.18280890511) _Ann. Phys. Chem._, 13, 122–137.
+- Magnus, G., 1844: [**Versuche über die Spannkräfte des Wasserdampfs.**](https://doi.org/10.1002/andp.18441370202) _Ann. Phys. Chem._, 61, 225–247.
 
 ### Heat Index
 
@@ -140,11 +141,13 @@ The Heat Index is calculated using the following equations. All temperature valu
 
 $f(x) = 0.5 \times \left( \text{T} + 61.0 + \left( \left( \text{T} - 68.0 \right) \times 1.2 \right) + \left( \text{RH} \times 0.094 \right) \right)$
 
-In case the Heat Index is above 80 ℉ or 26.67 ℃ one of the following equations are applied to calculate the Heat Index.
+In case the Heat Index is above 80 ℉ or 26.67 ℃ one of the following equations is applied to calculate the Heat Index.
 
-$\text{Heat Index} = -42.379 + 2.04901523 \times \text{T} + 10.14333127 \times RH - .22475541 \times \text{T} \times \text{RH} - 0.00683783 \times \text{T}^2 - 0.05481717 \times \text{RH}^2 + 0.00122874 \times \text{T}^2 \times \text{RH} + 0.00085282 \times \text{T} \times \text{RH}^2 \times - 0.00000199 \times \text{T}^2 \times \text{RH}^2$
+$\text{Heat Index} = -42.379 + 2.04901523 \times \text{T} + 10.14333127 \times RH - .22475541 \times \text{T} \times \text{RH}$
+$- 0.00683783 \times \text{T}^2 - 0.05481717 \times \text{RH}^2 + 0.00122874 \times \text{T}^2 \times \text{RH}$
+$+ 0.00085282 \times \text{T} \times \text{RH}^2 \times - 0.00000199 \times \text{T}^2 \times \text{RH}^2$
 
-When the rel. Humidity is smaller than 13 % and the temperature is bigger than 80 ℉ or 26.67 ℃ and smaller than 112 ℉ or 44.44 ℃ the following equation needs to be applied.
+When the rel. humidity is smaller than 13 % and if the temperature is bigger than 80 ℉ or 26.67 ℃ and smaller than 112 ℉ or 44.44 ℃ the following equation needs to be applied.
 
 $\text{Heat Index} = \text{Heat Index} - \frac{13.0 - \text{RH}}{4} \times \frac{\sqrt{17.0- \lvert \text{T}-95.0 \rvert}}{17.0}$
 
@@ -160,7 +163,7 @@ Source: <https://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml>
 
 ### Air Quality Index
 
-The Air Quality Index is calculated using the PM 2.5 value by default. If the AQI for the PM 10 is higher than for PM 2.5, it is taken as the AQI.
+The Air Quality Index is calculated using the PM 2.5 value by default. If the AQI for PM 10 is higher than for PM 2.5, it is taken as the AQI.
 
 $AQI = \frac{Conc - Conc_{low}}{Conc_{heigh} - Conc_{low}} \times (AQI_{high} - AQI_{low}) + AQI_{low}$
 
@@ -198,10 +201,10 @@ $\text{Pressure (PMSL)} = \frac{ \frac{P}{100} } { 1.0 - \left( \frac{\text{ALT}
 
 Source: <https://forums.adafruit.com/viewtopic.php?t=105831>
 
-### Precision
+## Precision
 
 None of the sensors used in the weather station have been calibrated other than the calibrations that were done at the factory. All measurements were compared to the closest local weather station and seem to be in good agreement. The data from the **BME680** is pretty much spot on. The UV index by the **SI1145** seems to be on the lower end but at the same time is very hard to compare in the winter, since the amount of UV light is low to begin with and the azimuth is low as well. The next summer will show how the measurements work and if the glass is absorbing too much UV. The particle measurements from the **PMS5003** are comparable to the results from the closest station, but can deviate more, since very local sources of particles, like a neighbor's BBQ can change the result. Further the official AQI (Air Quality Index) is taking other pollutants into account, that the Weather Station is not equipped for, like Ozone (O₃), which can be the main contributor to the AQI, thus underestimating the AQI.
 
 ## Battery Life | Solar Power
 
-The data is recorded in 5 min intervals, putting the ESP into sleep mode in between measurements to save power. The biggest power consumption is by the particle sensor's fan. It is running for a minimum duration of 30 seconds before each measurement. So far the solar panel is able to recharge the battery in about 2-3h (November), but the winter will show if it can keep the battery sufficiently charged, especially under cloudy conditions, snow and low temperatures.
+The data is recorded in 5-minute intervals, putting the ESP into sleep mode in between measurements to save power. The biggest power consumption is by the particle sensor's fan. It is running for a minimum duration of 30 seconds before each measurement. So far the solar panel is able to recharge the battery in about 2-3 hours (November), but the winter will show if it can keep the battery sufficiently charged, especially under cloudy conditions, snow, and low temperatures.
